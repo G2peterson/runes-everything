@@ -1,0 +1,28 @@
+export const RUNES = [
+  { n: 1, name: "Fehu", glyph: "ᚠ", emoji: "🐄", sound: "f", keywords: ["wealth", "cattle"], tags: ["material","resource","start"] },
+  { n: 2, name: "Uruz", glyph: "ᚢ", emoji: "🐃", sound: "u", keywords: ["strength", "aurochs"], tags: ["body","force","endurance"] },
+  { n: 3, name: "Thurisaz", glyph: "ᚦ", emoji: "🛡", sound: "th", keywords: ["thorn", "giant"], tags: ["boundary","protection","warning"] },
+  { n: 4, name: "Ansuz", glyph: "ᚨ", emoji: "📡", sound: "a", keywords: ["mouth", "message"], tags: ["signal","mind","meaning"] },
+  { n: 5, name: "Raidho", glyph: "ᚱ", emoji: "🐎", sound: "r", keywords: ["ride", "road"], tags: ["motion","order","journey"] },
+  { n: 6, name: "Kenaz", glyph: "ᚲ", emoji: "🔦", sound: "k", keywords: ["torch", "knowledge"], tags: ["clarity","skill","craft"] },
+  { n: 7, name: "Gebo", glyph: "ᚷ", emoji: "🎁", sound: "g", keywords: ["gift", "exchange"], tags: ["trade","balance","bond"] },
+  { n: 8, name: "Wunjo", glyph: "ᚹ", emoji: "🫂", sound: "w", keywords: ["joy", "harmony"], tags: ["social","cohesion","relief"] },
+
+  { n: 9, name: "Hagalaz", glyph: "ᚺ", emoji: "⛈️", sound: "h", keywords: ["hail", "disruption"], tags: ["shock","change","weather"] },
+  { n: 10, name: "Nauthiz", glyph: "ᚾ", emoji: "⚖️", sound: "n", keywords: ["need", "constraint"], tags: ["pressure","boundary","discipline"] },
+  { n: 11, name: "Isa", glyph: "ᛁ", emoji: "🧊", sound: "i", keywords: ["ice", "stillness"], tags: ["pause","focus","hold"] },
+  { n: 12, name: "Jera", glyph: "ᛃ", emoji: "📅", sound: "j", keywords: ["year", "harvest"], tags: ["cycle","timing","return"] },
+  { n: 13, name: "Eiwaz", glyph: "ᛇ", emoji: "🏹", sound: "ei", keywords: ["yew", "endurance"], tags: ["spine","stability","persist"] },
+  { n: 14, name: "Perthro", glyph: "ᛈ", emoji: "🎲", sound: "p", keywords: ["chance", "hidden"], tags: ["unknown","probability","mystery"] },
+  { n: 15, name: "Algiz", glyph: "ᛉ", emoji: "🫎", sound: "z", keywords: ["elk", "protection"], tags: ["shield","boundary","safety"] },
+  { n: 16, name: "Sowilo", glyph: "ᛊ", emoji: "☀️", sound: "s", keywords: ["sun", "success"], tags: ["clarity","vitality","direction"] },
+
+  { n: 17, name: "Tiwaz", glyph: "ᛏ", emoji: "⚔️", sound: "t", keywords: ["Tyr", "sacrifice"], tags: ["duty","courage","law"] },
+  { n: 18, name: "Berkano", glyph: "ᛒ", emoji: "🤱", sound: "b", keywords: ["birch", "growth"], tags: ["care","birth","renewal"] },
+  { n: 19, name: "Ehwaz", glyph: "ᛖ", emoji: "🚣", sound: "e", keywords: ["horse", "teamwork"], tags: ["partnership","sync","motion"] },
+  { n: 20, name: "Mannaz", glyph: "ᛗ", emoji: "🧩", sound: "m", keywords: ["humanity", "self"], tags: ["identity","community","mind"] },
+  { n: 21, name: "Laguz", glyph: "ᛚ", emoji: "🌊", sound: "l", keywords: ["water", "flow"], tags: ["emotion","adapt","movement"] },
+  { n: 22, name: "Ingwaz", glyph: "ᛜ", emoji: "🌱", sound: "ng", keywords: ["seed", "inner life"], tags: ["potential","incubate","root"] },
+  { n: 23, name: "Dagaz", glyph: "ᛞ", emoji: "👁️", sound: "d", keywords: ["daybreak", "shift"], tags: ["turning","breakthrough","change"] },
+  { n: 24, name: "Othala", glyph: "ᛟ", emoji: "🏠", sound: "o", keywords: ["estate", "heritage"], tags: ["home","legacy","boundary"] },
+];
