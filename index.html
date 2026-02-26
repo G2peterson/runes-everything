@@ -4,48 +4,45 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Runes Everything</title>
-
-  <!-- CSS -->
   <link rel="stylesheet" href="./style.css" />
 </head>
-
 <body>
-
-  <h1>runes-everything</h1>
-  <p>Digital Elder Futhark centering tool</p>
+  <h1>Runes Everything</h1>
+  <p>Past, Test, Result, draw three runes, no duplicates.</p>
 
   <div class="controls">
-    <button id="drawBtn">Draw Past, Test, Result</button>
-    <button id="resetBtn">Reset bag</button>
-    <button id="clearBtn">Clear history</button>
+    <button id="drawBtn">Draw</button>
+    <button id="resetBtn">Reset Bag</button>
   </div>
 
-  <div class="cards">
-
-    <div class="card" id="pastCard">
-      <h2>Past</h2>
-      <div class="content">—</div>
+  <div class="grid">
+    <div class="card">
+      <div class="label">Past</div>
+      <div id="past" class="glyph">—</div>
+      <div id="pastName" class="name"></div>
+      <div id="pastEmoji" class="emoji"></div>
     </div>
 
-    <div class="card" id="testCard">
-      <h2>Test</h2>
-      <div class="content">—</div>
+    <div class="card">
+      <div class="label">Test</div>
+      <div id="test" class="glyph">—</div>
+      <div id="testName" class="name"></div>
+      <div id="testEmoji" class="emoji"></div>
     </div>
 
-    <div class="card" id="resultCard">
-      <h2>Result</h2>
-      <div class="content">—</div>
+    <div class="card">
+      <div class="label">Result</div>
+      <div id="result" class="glyph">—</div>
+      <div id="resultName" class="name"></div>
+      <div id="resultEmoji" class="emoji"></div>
     </div>
-
   </div>
 
-  <h2>Today’s single sentence</h2>
-  <div id="sentence">—</div>
+  <h2>Single sentence</h2>
+  <div id="sentence" class="sentence">—</div>
 
-  <!-- JAVASCRIPT (ORDER MATTERS) -->
   <script src="./runes.js"></script>
   <script src="./main.js"></script>
-  <script src="./script.js"></script>
-
 </body>
 </html>
+
