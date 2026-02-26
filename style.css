@@ -7,54 +7,142 @@ body {
   padding: 16px;
 }
 
-h1 {
-  margin: 0 0 12px 0;
+.app {
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.header h1 {
+  margin: 0 0 6px 0;
+  font-size: 28px;
+}
+
+.sub {
+  margin: 0 0 18px 0;
+  opacity: 0.8;
 }
 
 .controls {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   flex-wrap: wrap;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
-button {
+.btn {
   padding: 10px 12px;
+  border: 1px solid #bbb;
+  border-radius: 10px;
+  background: #fff;
   cursor: pointer;
+}
+
+.btn.primary {
+  border-color: #444;
+  font-weight: 700;
+}
+
+.btn.danger {
+  border-color: #a33;
 }
 
 .spread {
   display: grid;
-  grid-template-columns: repeat(3, minmax(160px, 1fr));
+  grid-template-columns: 1fr;
   gap: 12px;
-  margin-top: 12px;
+  margin: 14px 0 18px 0;
+}
+
+@media (min-width: 720px) {
+  .spread {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
 }
 
 .card {
-  border: 1px solid #999;
-  border-radius: 10px;
+  border: 1px solid #ddd;
+  border-radius: 14px;
   padding: 12px;
+  min-height: 150px;
 }
 
-.slot {
-  font-size: 12px;
-  opacity: 0.8;
-  margin-bottom: 8px;
+.card .pos {
+  font-size: 14px;
+  opacity: 0.75;
+  margin-bottom: 6px;
 }
 
-.glyph {
-  font-size: 48px;
-  line-height: 1;
-  margin: 6px 0 10px 0;
+.card .topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
 }
 
-.meta {
+.card .num {
+  font-weight: 700;
+  opacity: 0.7;
+}
+
+.card .name {
+  font-size: 18px;
+  font-weight: 800;
+  margin: 0;
+}
+
+.card .glyph {
+  font-size: 30px;
+  font-weight: 800;
+}
+
+.card .emoji {
+  font-size: 22px;
+}
+
+.card .meta {
+  margin-top: 10px;
   font-size: 14px;
   line-height: 1.35;
 }
 
-.small {
-  font-size: 12px;
+.output h2 {
+  margin: 18px 0 8px 0;
+}
+
+.single {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.para {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.settings {
+  margin-top: 18px;
+  border-top: 1px solid #eee;
+  padding-top: 14px;
+}
+
+.settings .row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin: 8px 0;
+}
+
+.settings label {
+  width: 120px;
   opacity: 0.8;
-  margin-top: 10px;
+}
+
+.settings select {
+  padding: 8px;
+  border-radius: 10px;
+}
+
+.footer {
+  margin-top: 18px;
+  opacity: 0.7;
 }
