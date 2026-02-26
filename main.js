@@ -1,291 +1,175 @@
-import { RUNES } from "./runes.js";
+// main.js, app logic
 
-const els = {
-  drawBtn: document.getElementById("drawBtn"),
-  resetBagBtn: document.getElementById("resetBagBtn"),
-  clearHistoryBtn: document.getElementById("clearHistoryBtn"),
-  pastCard: document.getElementById("pastCard"),
-  testCard: document.getElementById("testCard"),
-  resultCard: document.getElementById("resultCard"),
-  singleSentence: document.getElementById("singleSentence"),
-  paragraph: document.getElementById("paragraph"),
-  tone: document.getElementById("tone"),
-  detail: document.getElementById("detail"),
-  humor: document.getElementById("humor"),
-};
+(function () {
+  const deckBase = (window.RUNES_DECK || []).slice();
 
-const STORAGE_KEYS = {
-  bag: "runes_everything_bag_v1",
-  history: "runes_everything_history_v1",
-  settings: "runes_everything_settings_v1",
-};
+  const el = (id) => document.getElementById(id);
 
-function loadSettings() {
-  try {
-    const s = JSON.parse(localStorage.getItem(STORAGE_KEYS.settings) || "{}");
-    return {
-      tone: s.tone || "neutral",
-      detail: s.detail || "medium",
-      humor: s.humor || "off",
-    };
-  } catch {
-    return { tone: "neutral", detail: "medium", humor: "off" };
+  const drawBtn = el("drawBtn");
+  const resetBtn = el("resetBtn");
+  const toneToggle = el("toneToggle");
+
+  const glyphPast = el("glyphPast");
+  const glyphTest = el("glyphTest");
+  const glyphResult = el("glyphResult");
+
+  const metaPast = el("metaPast");
+  const metaTest = el("metaTest");
+  const metaResult = el("metaResult");
+
+  const cards = el("cards");
+  const reading = el("reading");
+  const status = el("status");
+  const lastDraw = el("lastDraw");
+
+  let bag = [];
+  let drawCount = 0;
+
+  function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const t = arr[i];
+      arr[i] = arr[j];
+      arr[j] = t;
+    }
+    return arr;
   }
-}
 
-function saveSettings(settings) {
-  localStorage.setItem(STORAGE_KEYS.settings, JSON.stringify(settings));
-}
-
-function getSettingsFromUI() {
-  return {
-    tone: els.tone.value,
-    detail: els.detail.value,
-    humor: els.humor.value,
-  };
-}
-
-function applySettingsToUI(settings) {
-  els.tone.value = settings.tone;
-  els.detail.value = settings.detail;
-  els.humor.value = settings.humor;
-}
-
-function loadBag() {
-  const raw = localStorage.getItem(STORAGE_KEYS.bag);
-  if (!raw) return makeNewBag();
-  try {
-    const ids = JSON.parse(raw);
-    if (!Array.isArray(ids) || ids.length === 0) return makeNewBag();
-    return ids;
-  } catch {
-    return makeNewBag();
+  function resetBag() {
+    bag = shuffle(deckBase.slice());
+    status.textContent = "Bag reset, 24 runes ready.";
   }
-}
 
-function saveBag(bagIds) {
-  localStorage.setItem(STORAGE_KEYS.bag, JSON.stringify(bagIds));
-}
-
-function makeNewBag() {
-  const ids = RUNES.map(r => r.n);
-  shuffleInPlace(ids);
-  saveBag(ids);
-  return ids;
-}
-
-function shuffleInPlace(arr) {
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    const tmp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = tmp;
+  function aettName(n) {
+    if (n >= 1 && n <= 8) return "First Ætt";
+    if (n >= 9 && n <= 16) return "Second Ætt";
+    return "Third Ætt";
   }
-}
 
-function drawOneNoDup() {
-  let bag = loadBag();
-  if (bag.length === 0) bag = makeNewBag();
-  const n = bag.pop();
-  saveBag(bag);
-  return runeByNumber(n);
-}
-
-function runeByNumber(n) {
-  const r = RUNES.find(x => x.n === n);
-  if (!r) throw new Error("Missing rune: " + n);
-  return r;
-}
-
-function saveHistory(entry) {
-  const raw = localStorage.getItem(STORAGE_KEYS.history);
-  let list = [];
-  try { list = raw ? JSON.parse(raw) : []; } catch { list = []; }
-  list.unshift(entry);
-  list = list.slice(0, 50);
-  localStorage.setItem(STORAGE_KEYS.history, JSON.stringify(list));
-}
-
-function clearHistory() {
-  localStorage.removeItem(STORAGE_KEYS.history);
-}
-
-function renderCard(el, roleLabel, rune) {
-  el.innerHTML = `
-    <div class="pos">${roleLabel}</div>
-    <div class="topline">
-      <div>
-        <div class="num">#${rune.n}</div>
-        <p class="name">${escapeHtml(rune.name)}</p>
-      </div>
-      <div style="text-align:right">
-        <div class="glyph">${escapeHtml(rune.glyph)}</div>
-        <div class="emoji">${escapeHtml(rune.emoji || "")}</div>
-      </div>
-    </div>
-    <div class="meta">
-      <div><strong>Sound</strong> ${escapeHtml(rune.sound)}</div>
-      <div><strong>Keywords</strong> ${escapeHtml(rune.keywords.join(", "))}</div>
-    </div>
-  `;
-}
-
-function escapeHtml(s) {
-  return String(s)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
-function chooseTheme(past, test, result) {
-  const themes = [
-    { id: "orientation", label: "orientation", tags: ["direction","order","focus","stability"] },
-    { id: "boundaries", label: "boundaries", tags: ["boundary","safety","discipline","shield"] },
-    { id: "exchange", label: "exchange", tags: ["trade","balance","bond","community"] },
-    { id: "clarity", label: "clarity", tags: ["clarity","meaning","skill","vitality"] },
-    { id: "change", label: "change", tags: ["change","turning","shock","unknown"] },
-    { id: "growth", label: "growth", tags: ["growth","renewal","cycle","potential"] },
-    { id: "flow", label: "flow", tags: ["movement","emotion","adapt","journey"] },
-  ];
-
-  const allTags = [...past.tags, ...test.tags, ...result.tags];
-
-  let best = [];
-  let bestScore = -1;
-
-  for (const t of themes) {
-    const score = t.tags.reduce((acc, tag) => acc + (allTags.includes(tag) ? 1 : 0), 0);
-    if (score > bestScore) {
-      bestScore = score;
-      best = [t];
-    } else if (score === bestScore) {
-      best.push(t);
+  function renderBox(which, r) {
+    const meta = `#${r.n} ${r.name}, ${r.pronunciation}`;
+    if (which === "past") {
+      glyphPast.textContent = r.glyph;
+      metaPast.textContent = meta;
+    }
+    if (which === "test") {
+      glyphTest.textContent = r.glyph;
+      metaTest.textContent = meta;
+    }
+    if (which === "result") {
+      glyphResult.textContent = r.glyph;
+      metaResult.textContent = meta;
     }
   }
 
-  if (best.length === 0) return themes[0];
-  return best[Math.floor(Math.random() * best.length)];
-}
-
-function roleText(role, rune) {
-  const k = rune.keywords;
-  if (role === "past") {
-    return `Past suggests ${k[0]}, with ${k[1] || k[0]} close by.`;
-  }
-  if (role === "test") {
-    return `Test points to ${k[0]}, the friction is around ${k[1] || k[0]}.`;
-  }
-  return `Result leans toward ${k[0]}, supported by ${k[1] || k[0]}.`;
-}
-
-function toneMods(settings) {
-  const tone = settings.tone;
-  const humor = settings.humor;
-
-  const hedge = (tone === "direct") ? "" : "may ";
-  const suggestWord = (tone === "direct") ? "signals" : "suggests";
-  const taskPhrase =
-    (tone === "direct")
-      ? "The task is not to control, it is to maintain."
-      : "The task of the day is not to control conditions, it is to maintain orientation.";
-
-  const joke =
-    (humor === "light")
-      ? " No prophecy, just railroad tracks, stay on them."
-      : "";
-
-  return { hedge, suggestWord, taskPhrase, joke };
-}
-
-function makeSingleSentence(past, test, result, theme, settings) {
-  const { taskPhrase, joke } = toneMods(settings);
-
-  const core =
-    `Past ${past.keywords[0]}, Test ${test.keywords[0]}, Result ${result.keywords[0]}. ${taskPhrase}`;
-
-  if (settings.detail === "short") return core + joke;
-
-  const themed =
-    `Theme is ${theme.label}, Past ${past.keywords[0]}, Test ${test.keywords[0]}, Result ${result.keywords[0]}. ${taskPhrase}`;
-
-  return themed + joke;
-}
-
-function makeParagraph(past, test, result, theme, settings) {
-  const { suggestWord } = toneMods(settings);
-
-  const p1 = `${past.name} ${suggestWord} recent conditions around ${past.keywords.join(", ")}.`;
-  const p2 = `${test.name} ${suggestWord} the day’s pressure point, it highlights ${test.keywords.join(", ")}, as a boundary to notice, not a fight to win.`;
-  const p3 = `${result.name} ${suggestWord} the balancing direction, ${result.keywords.join(", ")} helps keep orientation.`;
-
-  if (settings.detail === "short") {
-    return `${p1} ${p3}`;
+  function cardHTML(r, positionLabel) {
+    const emojiLine = (r.emoji || []).join(" ");
+    return `
+      <article class="card">
+        <div class="cardTop">
+          <div class="cardTitle">${r.n} , ${r.name}</div>
+          <div class="cardGlyph">${r.glyph}</div>
+        </div>
+        <div class="cardRow">Pronunciation, ${r.pronunciation}</div>
+        <div class="cardRow">Emoji, ${emojiLine}</div>
+        <div class="cardRow">Meaning, ${r.meaning}</div>
+        <div class="cardRow">Ætt, ${aettName(r.n)} , ${positionLabel}</div>
+      </article>
+    `;
   }
 
-  if (settings.detail === "long") {
-    return `${p1} Theme is ${theme.label}, so it helps to treat these as railroad tracks, constraints that keep movement honest. ${p2} ${p3}`;
+  function threeLineMeditation(r) {
+    // Simple, clean, non directive, third person
+    const lines = [];
+    lines.push(`This symbol points toward ${r.meaning.toLowerCase()}.`);
+    lines.push(`It can be held as an anchor rather than a command.`);
+    lines.push(`Attention on it tends to reveal what is already true.`);
+    return lines;
   }
 
-  return `${p1} ${p2} ${p3}`;
-}
+  function buildReading(past, test, result, humorous) {
+    const pastLines = threeLineMeditation(past);
+    const testLines = threeLineMeditation(test);
+    const resultLines = threeLineMeditation(result);
 
-function drawSpread() {
-  const past = drawOneNoDup();
-  let test = drawOneNoDup();
-  let result = drawOneNoDup();
+    const hook = humorous
+      ? `Tonight, the runes are being polite, but they are not whispering.`
+      : `Tonight, the runes offer three anchors that can be held without forcing an outcome.`;
 
-  // safety, in case bag logic is ever changed later
-  if (test.n === past.n) test = drawOneNoDup();
-  if (result.n === past.n || result.n === test.n) result = drawOneNoDup();
+    const paragraph = `
+      ${hook}
+      ${past.name} suggests the recent background is about ${past.meaning.toLowerCase()}.
+      ${test.name} places the present moment under ${test.meaning.toLowerCase()}.
+      ${result.name} points toward ${result.meaning.toLowerCase()} as the direction of release.
+      A person could treat this as a centering exercise, notice where the body tightens, then let the three anchors widen the track again.
+    `;
 
-  const settings = getSettingsFromUI();
-  saveSettings(settings);
+    return `
+      <div>
+        <div><strong>Past,</strong> ${past.glyph} ${past.name}</div>
+        <p>${pastLines.join("<br>")}</p>
 
-  const theme = chooseTheme(past, test, result);
+        <div style="margin-top:10px;"><strong>Test,</strong> ${test.glyph} ${test.name}</div>
+        <p>${testLines.join("<br>")}</p>
 
-  renderCard(els.pastCard, "Past", past);
-  renderCard(els.testCard, "Test", test);
-  renderCard(els.resultCard, "Result", result);
+        <div style="margin-top:10px;"><strong>Result,</strong> ${result.glyph} ${result.name}</div>
+        <p>${resultLines.join("<br>")}</p>
 
-  els.singleSentence.textContent = makeSingleSentence(past, test, result, theme, settings);
-  els.paragraph.textContent = makeParagraph(past, test, result, theme, settings);
+        <p style="margin-top:12px;">${paragraph}</p>
+      </div>
+    `;
+  }
 
-  saveHistory({
-    at: new Date().toISOString(),
-    past: past.n,
-    test: test.n,
-    result: result.n,
-    theme: theme.id,
-    settings,
-  });
-}
+  function drawThree() {
+    if (bag.length < 3) resetBag();
 
-function init() {
-  const settings = loadSettings();
-  applySettingsToUI(settings);
+    // Pull in order from bag, no duplicates
+    const past = bag.pop();
+    const test = bag.pop();
+    const result = bag.pop();
 
-  els.drawBtn.addEventListener("click", drawSpread);
+    drawCount += 1;
 
-  els.resetBagBtn.addEventListener("click", () => {
-    makeNewBag();
-    els.singleSentence.textContent = "Bag reset.";
-    els.paragraph.textContent = "";
-  });
+    // Right box is Past, middle is Test, left is Result
+    renderBox("past", past);
+    renderBox("test", test);
+    renderBox("result", result);
 
-  els.clearHistoryBtn.addEventListener("click", () => {
-    clearHistory();
-    els.singleSentence.textContent = "History cleared.";
-    els.paragraph.textContent = "";
-  });
+    lastDraw.textContent = `Draw #${drawCount}, numbers, ${past.n}, ${test.n}, ${result.n}. Remaining in bag, ${bag.length}.`;
 
-  // first render placeholders
-  els.pastCard.textContent = "Past card";
-  els.testCard.textContent = "Test card";
-  els.resultCard.textContent = "Result card";
-  els.singleSentence.textContent = "Press Draw Past, Test, Result.";
-  els.paragraph.textContent = "";
-}
+    cards.innerHTML =
+      cardHTML(past, "Past") +
+      cardHTML(test, "Test") +
+      cardHTML(result, "Result");
 
-init();
+    const humorous = !!(toneToggle && toneToggle.checked);
+    reading.innerHTML = buildReading(past, test, result, humorous);
+  }
+
+  function boot() {
+    if (!deckBase.length) {
+      if (status) status.textContent = "Deck missing. script.js did not load.";
+      return;
+    }
+
+    resetBag();
+
+    if (drawBtn) drawBtn.addEventListener("click", drawThree);
+    if (resetBtn) resetBtn.addEventListener("click", () => {
+      resetBag();
+      glyphPast.textContent = "?";
+      glyphTest.textContent = "?";
+      glyphResult.textContent = "?";
+      metaPast.textContent = "";
+      metaTest.textContent = "";
+      metaResult.textContent = "";
+      cards.innerHTML = "";
+      reading.innerHTML = "";
+      lastDraw.textContent = "";
+    });
+
+    if (status) status.textContent = "Ready. Hit Draw.";
+  }
+
+  boot();
+})();
