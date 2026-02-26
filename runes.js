@@ -596,3 +596,11 @@
   init();
 })();
 
+    }
+
+    setStatus("Ready.");
+  }
+
+  init();
+})();
+
