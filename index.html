@@ -1,66 +1,51 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Runes Everything</title>
-    <link rel="stylesheet" href="./style.css" />
-    <script defer src="./script.js"></script>
-    <script defer src="./main.js"></script>
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Runes Everything</title>
 
-  <body>
-    <main class="wrap">
-      <header class="top">
-        <h1>Runes Everything</h1>
-        <p class="sub">Past, Test, Result. Right box is Past. Middle is Test. Left is Result.</p>
-      </header>
+  <!-- CSS -->
+  <link rel="stylesheet" href="./style.css" />
+</head>
 
-      <section class="controls">
-        <button id="drawBtn" type="button">Draw Past Test Result</button>
+<body>
 
-        <label class="toggle">
-          <input id="toneToggle" type="checkbox" />
-          Humorous
-        </label>
+  <h1>runes-everything</h1>
+  <p>Digital Elder Futhark centering tool</p>
 
-        <button id="resetBtn" type="button" class="ghost">Reset bag</button>
-      </section>
+  <div class="controls">
+    <button id="drawBtn">Draw Past, Test, Result</button>
+    <button id="resetBtn">Reset bag</button>
+    <button id="clearBtn">Clear history</button>
+  </div>
 
-      <section class="spread" aria-label="Three rune spread">
-        <div class="box">
-          <div class="label">Result</div>
-          <div class="glyph" id="glyphResult">?</div>
-          <div class="meta" id="metaResult"></div>
-        </div>
+  <div class="cards">
 
-        <div class="box">
-          <div class="label">Test</div>
-          <div class="glyph" id="glyphTest">?</div>
-          <div class="meta" id="metaTest"></div>
-        </div>
+    <div class="card" id="pastCard">
+      <h2>Past</h2>
+      <div class="content">—</div>
+    </div>
 
-        <div class="box">
-          <div class="label">Past</div>
-          <div class="glyph" id="glyphPast">?</div>
-          <div class="meta" id="metaPast"></div>
-        </div>
-      </section>
+    <div class="card" id="testCard">
+      <h2>Test</h2>
+      <div class="content">—</div>
+    </div>
 
-      <section class="statusline">
-        <div id="status"></div>
-        <div id="lastDraw"></div>
-      </section>
+    <div class="card" id="resultCard">
+      <h2>Result</h2>
+      <div class="content">—</div>
+    </div>
 
-      <section>
-        <h2>Flashcards</h2>
-        <div id="cards" class="cards"></div>
-      </section>
+  </div>
 
-      <section>
-        <h2>Daily meditation</h2>
-        <div id="reading" class="reading"></div>
-      </section>
-    </main>
-  </body>
+  <h2>Today’s single sentence</h2>
+  <div id="sentence">—</div>
+
+  <!-- JAVASCRIPT (ORDER MATTERS) -->
+  <script src="./runes.js"></script>
+  <script src="./main.js"></script>
+  <script src="./script.js"></script>
+
+</body>
 </html>
