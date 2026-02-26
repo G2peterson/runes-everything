@@ -1,76 +1,66 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Runes Everything</title>
     <link rel="stylesheet" href="./style.css" />
+    <script defer src="./script.js"></script>
+    <script defer src="./main.js"></script>
   </head>
 
   <body>
-    <main id="app" class="app">
-      <header class="header">
-        <h1>runes-everything</h1>
-        <p class="sub">Digital Elder Futhark centering tool</p>
+    <main class="wrap">
+      <header class="top">
+        <h1>Runes Everything</h1>
+        <p class="sub">Past, Test, Result. Right box is Past. Middle is Test. Left is Result.</p>
       </header>
 
       <section class="controls">
-        <button id="drawBtn" class="btn primary" type="button">Draw Past, Test, Result</button>
-        <button id="resetBagBtn" class="btn" type="button">Reset bag</button>
-        <button id="clearHistoryBtn" class="btn danger" type="button">Clear history</button>
+        <button id="drawBtn" type="button">Draw Past Test Result</button>
+
+        <label class="toggle">
+          <input id="toneToggle" type="checkbox" />
+          Humorous
+        </label>
+
+        <button id="resetBtn" type="button" class="ghost">Reset bag</button>
       </section>
 
-      <section class="spread">
-        <div class="card" id="pastCard"></div>
-        <div class="card" id="testCard"></div>
-        <div class="card" id="resultCard"></div>
-      </section>
-
-      <section class="output">
-        <h2>Today’s single sentence</h2>
-        <p id="singleSentence" class="single"></p>
-
-        <h2>Daily centering paragraph</h2>
-        <p id="paragraph" class="para"></p>
-      </section>
-
-      <section class="settings">
-        <h2>Settings</h2>
-        <div class="row">
-          <label for="tone">Tone</label>
-          <select id="tone">
-            <option value="neutral">neutral</option>
-            <option value="gentle">gentle</option>
-            <option value="direct">direct</option>
-          </select>
+      <section class="spread" aria-label="Three rune spread">
+        <div class="box">
+          <div class="label">Result</div>
+          <div class="glyph" id="glyphResult">?</div>
+          <div class="meta" id="metaResult"></div>
         </div>
 
-        <div class="row">
-          <label for="detail">Detail</label>
-          <select id="detail">
-            <option value="short">short</option>
-            <option value="medium" selected>medium</option>
-            <option value="long">long</option>
-          </select>
+        <div class="box">
+          <div class="label">Test</div>
+          <div class="glyph" id="glyphTest">?</div>
+          <div class="meta" id="metaTest"></div>
         </div>
 
-        <div class="row">
-          <label for="humor">Humor</label>
-          <select id="humor">
-            <option value="off" selected>off</option>
-            <option value="light">light</option>
-          </select>
+        <div class="box">
+          <div class="label">Past</div>
+          <div class="glyph" id="glyphPast">?</div>
+          <div class="meta" id="metaPast"></div>
         </div>
       </section>
 
-      <footer class="footer">
-        <small>
-          Not therapy, not prediction, a centering exercise using boundaries and symbols.
-        </small>
-      </footer>
+      <section class="statusline">
+        <div id="status"></div>
+        <div id="lastDraw"></div>
+      </section>
+
+      <section>
+        <h2>Flashcards</h2>
+        <div id="cards" class="cards"></div>
+      </section>
+
+      <section>
+        <h2>Daily meditation</h2>
+        <div id="reading" class="reading"></div>
+      </section>
     </main>
-
-    <script type="module" src="./main.js"></script>
   </body>
 </html>
-
