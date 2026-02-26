@@ -1,148 +1,173 @@
 :root {
-  font-family: system-ui, Arial, sans-serif;
+  --bg: #0b0d10;
+  --panel: #11151b;
+  --panel2: #0f1318;
+  --text: #e9eef5;
+  --muted: #a9b4c4;
+  --line: #233041;
+  --accent: #7fd3ff;
 }
 
-body {
+* { box-sizing: border-box; }
+
+html, body {
   margin: 0;
-  padding: 16px;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
 
-.app {
+.wrap {
   max-width: 980px;
   margin: 0 auto;
+  padding: 18px;
 }
 
-.header h1 {
-  margin: 0 0 6px 0;
+.top h1 {
+  margin: 0 0 4px 0;
   font-size: 28px;
+  letter-spacing: 0.2px;
 }
 
 .sub {
-  margin: 0 0 18px 0;
-  opacity: 0.8;
+  margin: 0 0 14px 0;
+  color: var(--muted);
 }
 
 .controls {
   display: flex;
   gap: 10px;
+  align-items: center;
   flex-wrap: wrap;
   margin-bottom: 14px;
 }
 
-.btn {
+button {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--text);
   padding: 10px 12px;
-  border: 1px solid #bbb;
   border-radius: 10px;
-  background: #fff;
   cursor: pointer;
+  font-size: 14px;
 }
 
-.btn.primary {
-  border-color: #444;
-  font-weight: 700;
+button:hover {
+  border-color: var(--accent);
 }
 
-.btn.danger {
-  border-color: #a33;
+button.ghost {
+  background: transparent;
+}
+
+.toggle {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  padding: 9px 10px;
+  border-radius: 10px;
+  background: var(--panel2);
 }
 
 .spread {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 12px;
-  margin: 14px 0 18px 0;
+  margin: 12px 0 8px 0;
 }
 
-@media (min-width: 720px) {
-  .spread {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
+.box {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  border-radius: 14px;
+  padding: 12px;
+  min-height: 130px;
+}
+
+.label {
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.glyph {
+  font-size: 48px;
+  line-height: 1.05;
+  margin-top: 10px;
+}
+
+.meta {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.statusline {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  color: var(--muted);
+  margin: 8px 0 18px 0;
+}
+
+h2 {
+  margin: 18px 0 10px 0;
+  font-size: 18px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
 }
 
 .card {
-  border: 1px solid #ddd;
+  border: 1px solid var(--line);
+  background: var(--panel2);
   border-radius: 14px;
   padding: 12px;
-  min-height: 150px;
 }
 
-.card .pos {
-  font-size: 14px;
-  opacity: 0.75;
-  margin-bottom: 6px;
-}
-
-.card .topline {
+.cardTop {
   display: flex;
   justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
   align-items: baseline;
-  gap: 12px;
 }
 
-.card .num {
-  font-weight: 700;
-  opacity: 0.7;
-}
-
-.card .name {
-  font-size: 18px;
-  font-weight: 800;
-  margin: 0;
-}
-
-.card .glyph {
-  font-size: 30px;
-  font-weight: 800;
-}
-
-.card .emoji {
-  font-size: 22px;
-}
-
-.card .meta {
-  margin-top: 10px;
-  font-size: 14px;
-  line-height: 1.35;
-}
-
-.output h2 {
-  margin: 18px 0 8px 0;
-}
-
-.single {
-  font-size: 18px;
+.cardTitle {
   font-weight: 700;
 }
 
-.para {
-  font-size: 16px;
-  line-height: 1.5;
+.cardGlyph {
+  font-size: 26px;
 }
 
-.settings {
-  margin-top: 18px;
-  border-top: 1px solid #eee;
-  padding-top: 14px;
+.cardRow {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 6px;
 }
 
-.settings .row {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  margin: 8px 0;
+.reading {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  border-radius: 14px;
+  padding: 12px;
+  color: var(--text);
 }
 
-.settings label {
-  width: 120px;
-  opacity: 0.8;
+.reading p {
+  margin: 10px 0 0 0;
+  color: var(--muted);
 }
 
-.settings select {
-  padding: 8px;
-  border-radius: 10px;
-}
-
-.footer {
-  margin-top: 18px;
-  opacity: 0.7;
+@media (max-width: 720px) {
+  .spread { grid-template-columns: 1fr; }
+  .glyph { font-size: 52px; }
 }
